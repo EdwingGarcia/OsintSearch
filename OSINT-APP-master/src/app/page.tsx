@@ -1,5 +1,5 @@
 import TeamSection from "@/components/TeamSection";
-import Link from 'next/link'
+import Link from 'next/link';
 
 const Home = () => {
   return (
@@ -13,10 +13,7 @@ const Home = () => {
             Descubre los Activos Digitales de tu Organización con OSINT
           </p>
           <p className="mt-6 text-lg leading-8 text-gray-600">
-            Nuestra aplicación avanzada de inteligencia de fuentes abiertas
-            (OSINT) te permite identificar y rastrear todos los activos
-            digitales de cualquier empresa a partir de su nombre. Protege tu
-            infraestructura y mejora tu seguridad.
+            Rastrea activos digitales utilizando herramientas OSINT. Protege a tu compañía.
           </p>
         </div>
         <div className="mt-10 flex items-center justify-center">
@@ -44,38 +41,14 @@ const Home = () => {
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
-                    />
-                  </svg>
-                </div>
-                Push to deploy
-              </dt>
-              <dd className="mt-2 text-base leading-7 text-gray-600">
-                Texto ejemplo
-              </dd>
-            </div>
-            <div className="relative pl-16">
-              <dt className="text-base font-semibold leading-7 text-gray-900">
-                <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
-                  <svg
-                    className="h-6 w-6 text-white"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
                       d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
                     />
                   </svg>
                 </div>
-                SSL certificates
+                Seguridad avanzada
               </dt>
               <dd className="mt-2 text-base leading-7 text-gray-600">
-                Texto ejemplo
+                Protege tus datos con nuestras avanzadas medidas de seguridad.
               </dd>
             </div>
             <div className="relative pl-16">
@@ -96,10 +69,10 @@ const Home = () => {
                     />
                   </svg>
                 </div>
-                Simple queues
+                Conexión segura
               </dt>
               <dd className="mt-2 text-base leading-7 text-gray-600">
-                Texto ejemplo
+                Mantén una conexión segura y cifrada en todo momento.
               </dd>
             </div>
             <div className="relative pl-16">
@@ -120,16 +93,16 @@ const Home = () => {
                     />
                   </svg>
                 </div>
-                Advanced security
+                Monitoreo continuo
               </dt>
               <dd className="mt-2 text-base leading-7 text-gray-600">
-                Texto ejemplo
+                Vigila tus activos digitales en tiempo real.
               </dd>
             </div>
           </dl>
         </div>
       </div>
-      <TeamSection  />
+      <TeamSection />
     </div>
   );
 };
