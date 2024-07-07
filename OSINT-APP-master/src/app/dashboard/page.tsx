@@ -15,6 +15,15 @@ export default function Dashboard() {
   const [showDomainTable, setShowDomainTable] = useState(false);
   const [showPhoneTable, setShowPhoneTable] = useState(false);
   const [showIpTable, setShowIpTable] = useState(false);
+  const clearResults = () => {
+    setSearchResults([]);
+    setTelefonoResults([]);
+    setSearchIpResults([]);
+    setSearchIpVirusTotalResults([]);
+    setShowDomainTable(false);
+    setShowPhoneTable(false);
+    setShowIpTable(false);
+  };
 
   const options = {
     method: "GET",
@@ -25,9 +34,11 @@ export default function Dashboard() {
     },
   };
   const handleSearch = async () => {
-    if (!searchQuery && !busquedaNum && !busquedaIp) return;
+    if (!searchQuery && !busquedaNum && !busquedaIp) {
+      clearResults();
+      return;
+    }
 
-    // Mostrar la alerta de "Cargando"
     Swal.fire({
       title: "Cargando",
       html: "Estamos buscando la información...",
@@ -98,7 +109,7 @@ export default function Dashboard() {
         </h1>
         <div className="relative mt-4">
           <label htmlFor="Search" className="text-sm font-medium text-gray-700">
-            Ingresa el dominio principal de la empresa
+            Búsqueda por Dominio
           </label>
           <input
             type="text"
@@ -138,7 +149,7 @@ export default function Dashboard() {
             htmlFor="busqueda_num"
             className="text-sm font-medium text-gray-700"
           >
-            Ingresa numero de teléfono
+            Búsqueda por número de teléfono
           </label>
           <input
             type="text"
@@ -179,7 +190,7 @@ export default function Dashboard() {
             htmlFor="busqueda_ip"
             className="text-sm font-medium text-gray-700"
           >
-            Ingresa una dirección IP
+            Búsqueda por dirección IP
           </label>
           <input
             type="text"
@@ -216,7 +227,7 @@ export default function Dashboard() {
         </div>
 
         <div className="mt-8">
-          {showDomainTable && (
+          {(showDomainTable || showPhoneTable || showIpTable) && (
             <table className="min-w-full divide-y divide-gray-200">
               <thead>
                 <tr>
@@ -233,7 +244,7 @@ export default function Dashboard() {
                     Nombre Activo
                   </th>
                   <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    DESCRIPCIÓN
+                    Descripción
                   </th>
                   <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Valoración
@@ -241,153 +252,124 @@ export default function Dashboard() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {searchResults.map((result, index) => (
-                  <tr key={index}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {index + 1}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      Servicios
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      Dominio
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {result.domain}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {result.create_date}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      N/A
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-          {showPhoneTable  && (
-            <table className="mt-8 min-w-full divide-y divide-gray-200">
-              <thead>
-                <tr>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    # ACTIVO
-                  </th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Tipo Activo
-                  </th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Subcategoría
-                  </th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    NOMBRE ACTIVO
-                  </th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    DESCRIPCIÓN
-                  </th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    VALORACIÓN
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {searchTelefonoResults.map((result1, index) => (
-                  <tr key={index}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {index + 1}
-                    </td>
+                {(() => {
+                  let globalIndex = 1;
 
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      Comunicación
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {result1.phone_type}
-                    </td>
-
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {result1.phone}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      <div>País: {result1.country}</div>
-                      <div>Prefijo: +{result1.country_prefix}</div>
-                      <div>Operadora: {result1.carrier}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      N/A
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-          {showIpTable && (
-            <table className="mt-8 min-w-full divide-y divide-gray-200">
-              <thead>
-                <tr>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    # ACTIVO
-                  </th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    TIPO ACTIVO
-                  </th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    SUBCATEGORIA
-                  </th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    NOMBRE ACTIVO
-                  </th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    DESCRIPCIÓN
-                  </th>
-                  <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    VALORACIÓN
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {searchIpResults.map((result2, index) => (
-                  <tr key={index}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {index + 1}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      arquitectura
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {searchIpVirusTotalResults.map((result3, index) => (
-                        <tr key={`virus-${index}`}>
-                          <td>{result3.data.type}</td>
-                        </tr>
-                      ))}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      <div>ip:{result2.ip}</div>
-                      <div>subnet:{result2.subnet}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      <div>País: {result2.country}</div>
-                      <div>Nombre ASN:{result2.asn.name}</div>
-                      <div>ASN:{result2.asn.number}</div>
-                      <div>
-                        Nombres Alternativos:{" "}
-                        {searchIpVirusTotalResults.map((result3, index) => (
-                          <tr key={`virus-${index}`}>
-                            <td>
-                              <ul>
-                                {result3.data.attributes.last_https_certificate.extensions.subject_alternative_name.map(
-                                  (name, idx) => (
-                                    <li key={`alt-name-${idx}`}>-{name}</li>
-                                  )
-                                )}
-                              </ul>
+                  return (
+                    <>
+                      {showDomainTable &&
+                        searchResults.map((result, index) => (
+                          <tr key={`domain-${index}`}>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              {globalIndex++}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              <div><b>[S]</b></div>
+                              <div>Servicios</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              Dominio
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              {result.domain}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              {result.create_date}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              3
                             </td>
                           </tr>
                         ))}
-                      </div>
-                    </td>
-                    <td>N/A</td>
-                  </tr>
+                      {showPhoneTable &&
+                        searchTelefonoResults.map((result1, index) => (
+                          <tr key={`phone-${index}`}>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              {globalIndex++}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              <div> <b>[D]</b></div>
+                              <div>Datos/Información</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              {result1.phone_type}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              {result1.phone}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              <div><b>País:</b> {result1.country}</div>
+                              <div><b>Prefijo:</b> +{result1.country_prefix}</div>
+                              <div><b>Operadora:</b> {result1.carrier}</div>
+                              <div><b>Teléfono Local:</b> {result1.local_number}</div>
+                              <div>
+                              <b>Estado:</b>
+                                {result1.phone_valid ? "Activo" : "Inactivo"}
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              3
+                            </td>
+                          </tr>
+                        ))}
+{showIpTable &&
+  searchIpResults.map((result2, index) => (
+    <tr key={`ip-${index}`}>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+        {globalIndex++}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+        <div><b>[arch]</b></div>
+        <div>Arquitectura del Sistema</div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+        IP
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+        <div>IP: {result2.ip}</div>
+        <div>Subred: {result2.subnet}</div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+        <div><b> País:</b>  {result2.country}</div>
+        <div><b> Nombre ASN:</b>  {result2.asn.name}</div>
+        <div ><b>ASN:</b> {result2.asn.number}</div>
+        <div>--------------</div>
+        <div><b>Nombres Alternativos:</b></div>
+        <ul>
+          {searchIpVirusTotalResults.map((result3, idx) => (
+            <li key={`virus-${idx}`}>
+              {result3.data.attributes.last_https_certificate.extensions.subject_alternative_name.map((name, idx) => (
+                <div key={`alt-name-${idx}`}>
+                  - {name}
+                </div>
+              ))}
+            </li>
+          ))}
+        </ul>
+        <div>--------------</div>
+        <div><b>Resultados Análisis:</b></div>
+        <ul>
+          {searchIpVirusTotalResults.map((result3, idx) => (
+            <li key={`virus-analysis-${idx}`}>
+              <div>
+                {Object.keys(result3.data.attributes.last_analysis_stats).map((key) => (
+                  <div key={key}>
+                    <strong>{key}: </strong>
+                    {result3.data.attributes.last_analysis_stats[key]}
+                  </div>
                 ))}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </td>
+      <td>2</td>
+    </tr>
+  ))}
+
+                    </>
+                  );
+                })()}
               </tbody>
             </table>
           )}
